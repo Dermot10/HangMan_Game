@@ -1,0 +1,155 @@
+import random
+import time
+
+# The game will begin with the invitation
+
+print('Hello, welcome to the game \n')
+name = input("What is you name?: ")
+print(f'hello {name}! Good Luck my friend!')
+time.sleep(2)
+# will add 2 second time delay to system
+print("Get ready the game is about to begin!\n Let's play! ")
+time.sleep(3)
+
+
+def main():
+    # Parameters needed to handle the game's functionality
+    global count
+    global display
+    global word
+    global already_guessed
+    global length
+    global play_game
+    words_to_guess = ['approve', 'joyous', 'zonked', 'lonely', 'sick', 'satisfy', 'crowded', 'gamy', 'torpid', 'cynical', 'machine', 'agreeable', 'alive', 'tired', 'rate', 'carve', 'decorate', 'second-hand', 'feeling', 'level', 'scintillating', 'tiny', 'waiting', 'forgetful', 'trucks', 'dance', 'babies', 'teeny', 'tough', 'dynamic', 'vagabond', 'song', 'towering', 'watery', 'letter', 'roof', 'yarn', 'shocking', 'crawl', 'vague', 'sense', 'camp', 'double', 'sophisticated', 'painful', 'winter', 'comfortable', 'satisfying',
+                      'finger', 'bless', 'sloppy', 'wreck', 'stir', 'drain', 'slim', 'moaning', 'limping', 'system', 'round', 'gaudy', 'ladybug', 'scare', 'tested', 'broad', 'ultra', 'collect', 'hospitable', 'unarmed', 'destruction', 'standing', 'punish', 'curious', 'choke', 'oafish', 'rightful', 'attractive', 'warm', 'beg', 'blood', 'seat', 'downtown', 'present', 'bead', 'liquid', 'dizzy', 'teeny', 'sturdy', 'unruly', 'funny', 'physical', 'confuse', 'nice', 'search', 'grape', 'basketball', 'nosy', 'pickle', 'camera', 'concerned', 'brash']
+    word = random.choice(words_to_guess)
+    length = len(word)
+    count = 0
+    display = '_' * length
+    already_guessed = []
+    play_game = ""
+
+# A loop to re-excute the game based on input
+
+
+def play_loop():
+    global play_game
+    play_game = input('Would you like to play again? Yes/No \n')
+    while play_game not in ['y', 'n', 'Y', 'N']:
+        play_game = input('Would you like to play again? Yes/No \n').lower()
+    if play_game == 'y' or play_game == 'yes':
+        main()
+    elif play_game == 'n' or play_game == 'no':
+        print('Thanks for playing, I look for to playing with you soon!')
+        exit()
+
+# Function to execure
+
+
+def hangman():
+    global count
+    global display
+    global word
+    global already_guessed
+    global play_game
+    limit = 5
+    guess = input("This is the hangman word:" +
+                  display + "Enter your guess: \n")
+    guess = guess.strip()
+    if len(guess.strip()) == 0 or len(guess.strip()) >= 2 or guess <= "9":
+        print("Invalid input, try another letter\n")
+        hangman()
+
+    elif guess in word:
+        already_guessed.extend([guess])
+        index = word.find(guess)
+        word = word[:index] + "_" + word[index + 1:]
+        display = display[:index] + guess + display[index + 1:]
+        print(display + "\n")
+
+    elif guess in already_guessed:
+        print("try another letter. \n")
+
+    else:
+        count += 1
+
+        score = str(limit - count)
+
+        if score == 1:
+            time.sleep(1)
+            print("   _______ \n"
+                  "  |        \n"
+                  "  |        \n"
+                  "  |        \n"
+                  "  |        \n"
+                  "  |        \n"
+                  "  |        \n"
+                  "  |        \n"
+                  "__|__\n")
+            print(f"Wrong guess {score} guesses remaining\n")
+
+        elif count == 2:
+            time.sleep(2)
+            print("   _______  \n"
+                  "  |       | \n"
+                  "  |       | \n"
+                  "  |         \n"
+                  "  |         \n"
+                  "  |         \n"
+                  "  |         \n"
+                  "  |         \n"
+                  "__|__\n")
+            print(f"Wrong guess {score} guesses remaining\n")
+
+        elif count == 3:
+            time.sleep(1)
+            print("   _______  \n"
+                  "  |       | \n"
+                  "  |       | \n"
+                  "  |       | \n"
+                  "  |         \n"
+                  "  |         \n"
+                  "  |         \n"
+                  "  |         \n"
+                  "__|__\n")
+            print(f"Wrong guess {score} guesses remaining\n")
+
+        elif count == 4:
+            time.sleep(1)
+            print("   _______  \n"
+                  "  |       | \n"
+                  "  |       | \n"
+                  "  |       | \n"
+                  "  |       O \n"
+                  "  |         \n"
+                  "  |         \n"
+                  "  |         \n"
+                  "__|__\n")
+            print(f"Wrong guess {score} guesses remaining\n")
+
+        elif count == 5:
+            time.sleep(2)
+            print("   _______   \n"
+                  "  |       |  \n"
+                  "  |       |  \n"
+                  "  |       |  \n"
+                  "  |       O  \n"
+                  "  |      /|\  \n"
+                  "  |      / \  \n"
+                  "  |          \n"
+                  "__|__\n")
+            print(f"Wrong guess {score} guesses remaining\n")
+            print("Wrong guess. You lose!!!\n")
+            print("The word was:", already_guessed, word)
+            play_loop()
+
+    if word == '_' * length:
+        print("Congratulations!!! You guessed the word correctly!")
+        play_loop()
+
+    elif count != limit:
+        hangman()
+
+
+main()
+hangman()
